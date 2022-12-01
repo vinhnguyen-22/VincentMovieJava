@@ -14,8 +14,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "category")
-@NamedQueries({ @NamedQuery(name = "Category.HQL.getByName", query = "SELECT c FROM category c where c.name = :name"),
-		@NamedQuery(name = "Category.HQL.getByNameAndNotCategoryId", query = "SELECT c FROM category c where c.name = :name and c.categoryId != :categoryId") })
+@NamedQueries({ @NamedQuery(name = "Category.HQL.getByName", query = "SELECT c FROM Category c where c.name = :name"),
+		@NamedQuery(name = "Category.HQL.getByNameAndNotCategoryId", query = "SELECT c FROM Category c where c.name = :name and c.categoryId != :categoryId") })
 public class Category {
 
 	@Id
@@ -92,5 +92,4 @@ public class Category {
 	public String toString() {
 		return "Category [categoryId=" + categoryId + ", name=" + name + "]";
 	}
-
 }

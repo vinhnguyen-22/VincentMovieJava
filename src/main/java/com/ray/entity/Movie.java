@@ -24,9 +24,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 		@NamedQuery(name = "Movie.HQL.getByNameAndNotProductId", query = "SELECT m FROM Movie m where m.name = :name and m.movieId != :moieId") })
 public class Movie {
 
-	public Movie() {
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "movie_id")
@@ -44,8 +41,8 @@ public class Movie {
 	@Column(name = "author")
 	private String author;
 
-	@Column(name = "desc")
-	private String desc;
+	@Column(name = "description")
+	private String description;
 
 	@Column(name = "cat_desc")
 	private String catdesc;
@@ -72,6 +69,9 @@ public class Movie {
 
 	@Transient
 	private String base64Image;
+
+	public Movie() {
+	}
 
 	public Integer getMovieId() {
 		return movieId;
@@ -114,11 +114,11 @@ public class Movie {
 	}
 
 	public String getDesc() {
-		return desc;
+		return description;
 	}
 
 	public void setDesc(String desc) {
-		this.desc = desc;
+		this.description = desc;
 	}
 
 	public String getCatdesc() {
@@ -188,9 +188,10 @@ public class Movie {
 	@Override
 	public String toString() {
 		return "Movie [movieId=" + movieId + ", name=" + name + ", actor=" + actor + ", country=" + country
-				+ ", author=" + author + ", desc=" + desc + ", catdesc=" + catdesc + ", status=" + status + ", img="
-				+ Arrays.toString(img) + ", episode=" + episode + ", publishDate=" + publishDate + ", lastUpdateTime="
-				+ lastUpdateTime + ", category=" + category + ", base64Image=" + base64Image + "]";
+				+ ", author=" + author + ", description=" + description + ", catdesc=" + catdesc + ", status=" + status
+				+ ", img=" + Arrays.toString(img) + ", episode=" + episode + ", publishDate=" + publishDate
+				+ ", lastUpdateTime=" + lastUpdateTime + ", category=" + category + ", base64Image=" + base64Image
+				+ "]";
 	}
 
 }

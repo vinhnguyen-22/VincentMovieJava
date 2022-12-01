@@ -1,11 +1,6 @@
 <div class="sidebar">
   <div class="logo-details mt-3">
-    <div class="logo-box">
-      <div style="border-radius: 50%">
-        <img width="100%" src="/img/logo.png" alt="" />
-      </div>
-    </div>
-    <a href="/admin"><span class="logo_name">Vincent Movie</span></a>
+    <a href="../admin"><span class="logo_name">Vincent Movie</span></a>
     <i id="menu-toggle" class="fa-solid fa-bars fa-lg text-white ml-3"></i>
   </div>
   <ul class="nav-links">
@@ -29,12 +24,11 @@
 
     <li>
       <div class="icon-link">
-        <a href="/admin/products/storage">
+        <a href="../admin/manage_category">
           <i class="fas fa-shopping-cart"></i>
           <span class="link_name">Category</span>
         </a>
       </div>
     </li>
-
   </ul>
 </div>

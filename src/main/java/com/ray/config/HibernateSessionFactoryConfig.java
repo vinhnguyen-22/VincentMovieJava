@@ -19,7 +19,7 @@ public class HibernateSessionFactoryConfig {
 			try {
 				Properties settings = new Properties();
 				settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
-				settings.put(Environment.URL, "jdbc:mysql://localhost:3306/vincentbookstrore?useSSL=false");
+				settings.put(Environment.URL, "jdbc:mysql://localhost:3306/vincent_movie?useSSL=false");
 				settings.put(Environment.USER, "root");
 				settings.put(Environment.PASS, "Vincentazure22");
 				settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
