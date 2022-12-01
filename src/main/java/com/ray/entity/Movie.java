@@ -21,7 +21,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "movie")
 @NamedQueries({ @NamedQuery(name = "Movie.HQL.getByName", query = "SELECT m FROM Movie m where m.name = :name"),
-		@NamedQuery(name = "Movie.HQL.getByNameAndNotProductId", query = "SELECT m FROM Movie m where m.name = :name and m.movieId != :moieId") })
+		@NamedQuery(name = "Movie.HQL.getByNameAndNotMovieId", query = "SELECT m FROM Movie m where m.name = :name and m.movieId != :moieId") })
 public class Movie {
 
 	@Id

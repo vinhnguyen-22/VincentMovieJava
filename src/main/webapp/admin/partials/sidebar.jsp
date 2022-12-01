@@ -12,20 +12,18 @@
         </a>
       </div>
     </li>
-
-    <li class="d-none">
+    <li>
       <div class="icon-link">
-        <a href="/admin/orders/storage">
-          <i class="fa-solid fa-receipt"></i>
+        <a href="../admin/manage_movie">
+          <i class="fa-solid fa-box"></i>
           <span class="link_name">Movie</span>
         </a>
       </div>
     </li>
-
     <li>
       <div class="icon-link">
         <a href="../admin/manage_category">
-          <i class="fas fa-shopping-cart"></i>
+          <i class="fas fa-dashboard"></i>
           <span class="link_name">Category</span>
         </a>
       </div>

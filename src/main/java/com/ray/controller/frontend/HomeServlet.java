@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//import com.ray.service.CategoryService;
-
 /**
  * Servlet implementation class HomeServlet
  */
@@ -34,10 +32,6 @@ public class HomeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-//		List<Category> categoryList = categoryService.listCategory();
-//
-//		request.setAttribute("categoryList", categoryList);
-//
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/frontend/index.jsp");
 		dispatcher.forward(request, response);
 	}

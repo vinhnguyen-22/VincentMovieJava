@@ -53,26 +53,26 @@ public class MovieDAO extends JpaDAO<Movie> {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("name", name);
 
-		List<Movie> MovieList = super.getNamedEqueryWithParams("Movie.HQL.getByName", params);
+		List<Movie> movieList = super.getNamedEqueryWithParams("Movie.HQL.getByName", params);
 
 		/// get first record
-		if (MovieList != null && MovieList.size() > 0) {
-			return MovieList.get(0);
+		if (movieList != null && movieList.size() > 0) {
+			return movieList.get(0);
 		}
 
 		return null;
 	}
 
-	public Movie getByNameAndNotMovieId(Movie Movie) {
+	public Movie getByNameAndNotMovieId(Movie movie) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("name", Movie.getName());
-		params.put("MovieId", Movie.getMovieId());
+		params.put("name", movie.getName());
+		params.put("movieId", movie.getMovieId());
 
-		List<Movie> MovieList = super.getNamedEqueryWithParams("Movie.HQL.getByNameAndNotMovieId", params);
+		List<Movie> movieList = super.getNamedEqueryWithParams("Movie.HQL.getByNameAndNotMovieId", params);
 
 		/// get first record
-		if (MovieList != null && MovieList.size() > 0) {
-			return MovieList.get(0);
+		if (movieList != null && movieList.size() > 0) {
+			return movieList.get(0);
 		}
 
 		return null;
@@ -82,9 +82,9 @@ public class MovieDAO extends JpaDAO<Movie> {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("name", name);
 
-		List<Movie> MovieList = super.getNamedEqueryWithParams("Movie.HQL.getByName", params);
+		List<Movie> movieList = super.getNamedEqueryWithParams("Movie.HQL.getByName", params);
 
-		return MovieList;
+		return movieList;
 	}
 
 }

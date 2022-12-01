@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.ray.entity.Category;
@@ -37,9 +36,6 @@ public class CategoryController extends HttpServlet {
 		switch (theCommand) {
 		case "LIST":
 			getList(request, response);
-			break;
-		case "NEW":
-			showNewForm(request, response);
 			break;
 		case "LOAD":
 			showEditForm(request, response);
@@ -84,24 +80,20 @@ public class CategoryController extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
-	private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		HttpSession session = request.getSession();
-		session.setAttribute("theCategory", null);
-
-		response.sendRedirect("manage_category?command=LIST");
-	}
-
 	private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
 		response.setContentType("application/json");
 		Integer theCategoryId = Integer.valueOf(request.getParameter("categoryId"));
 
 		Category categoryToUpdate = categoryService.getById(theCategoryId);
+		Category category = new Category();
+		category.setName(categoryToUpdate.getName());
+		category.setCategoryId(theCategoryId);
 		Gson gson = new Gson();
 		PrintWriter writer = response.getWriter();
-		writer.print(gson.toJson(categoryToUpdate));
+		writer.print(gson.toJson(category));
 		writer.flush();
 		writer.close();
-
 	}
 
 	private void insert(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

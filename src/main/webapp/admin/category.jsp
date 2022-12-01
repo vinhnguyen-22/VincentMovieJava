@@ -90,7 +90,6 @@
 <jsp:include page="partials/categoryModal.jsp">
 	<jsp:param name="title" value="Edit category" />
 	<jsp:param name="command" value="UPDATE" />
-	<jsp:param name="theCategory" value="theCategory" />
 	<jsp:param name="modal" value="updateModal" />
 </jsp:include>
 
@@ -136,7 +135,7 @@
 				dataType: "JSON",
 				contentType: "application/json",
 				success: function(rs) {
-					console.log(rs);
+					$("#updateModal #name").val(rs.name);
 				}
 			})
 		})
