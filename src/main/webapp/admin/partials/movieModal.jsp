@@ -69,7 +69,7 @@
 
                 <div class="mb-2 col-md-6">
                   <div class="form-floating mb-2">
-                      <input name="episode" id="episode" type="text" value=""
+                      <input name="episode" id="episode" type="number" value=""
                               class="form-control" id="inputMovieEpisode" placeholder="inputMovieEpisode">
                       <label for="inputMovieEpisode">Episode</label>
                       <div class="invalid-feedback">Please input a episode</div>

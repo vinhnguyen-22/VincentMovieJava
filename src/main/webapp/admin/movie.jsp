@@ -71,14 +71,16 @@
 								<td>${movie.author }</td>
 								<td>${movie.status }</td>
 								<td>
-									<button data-id="${movie.movieId }" type="button"
+									<button
+									data-catId="${movie.category.categoryId}"
+									data-id="${movie.movieId }" type="button"
 									data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-whatever="@mdo"
 									name="" id="" class="btn btn-warning edit btn-block">
 										<i class="fa fa-pen"></i>
 										Edit
 									</button>
 									<span class="mx-3"> | </span>
-									<button data-id="${movie.movieId }" type="button" name="" id="" class="btn btn-danger delete btn-block">
+									<button  data-id="${movie.movieId }" type="button" name="" id="" class="btn btn-danger delete btn-block">
 										<i class="fa fa-bin"></i>
 										<a class="text-light " style="text-decoration: none" href="manage_movie?command=DELETE&movieId=${movie.movieId}">Delete</a>
 									</button>
@@ -135,12 +137,15 @@
 		});
 		$(".edit").on('click', function() {
 			var id = $(this).data("id");
+			var catId = $(this).data("catId");
 			$('#updateModal #id').val(id)
+			$('#updateModal #catId').val(catId)
 			$.ajax({
 				type: "GET",
 				url:'manage_movie?command=LOAD',
 				data:{
-					movieId: id
+					movieId: id,
+					categoryId: catId
 				},
 				dataType: "JSON",
 				contentType: "application/json",

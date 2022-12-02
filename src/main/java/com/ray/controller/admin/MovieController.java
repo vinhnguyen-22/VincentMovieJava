@@ -1,6 +1,7 @@
 package com.ray.controller.admin;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,8 +15,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
 import com.ray.entity.Category;
 import com.ray.entity.Movie;
 import com.ray.service.CategoryService;
@@ -95,16 +96,32 @@ public class MovieController extends HttpServlet {
 	}
 
 	private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		HttpSession session = request.getSession();
+		response.setContentType("application/json");
 		Integer theMovieId = Integer.valueOf(request.getParameter("movieId"));
 
 		Movie movieToUpdate = movieService.getById(theMovieId);
-		session.setAttribute("theMovie", movieToUpdate);
 
 		List<Category> categoryList = categoryService.listCategory();
 		request.getSession().setAttribute("categoryList", categoryList);
+		Integer theCategoryId = Integer.valueOf(request.getParameter("categoryId"));
 
-		response.sendRedirect("movie.jsp");
+		Category categoryToUpdate = categoryService.getById(theCategoryId);
+		Movie movie = new Movie();
+		movie.setName(movieToUpdate.getName());
+		movie.setAuthor(movieToUpdate.getAuthor());
+		movie.setActor(movieToUpdate.getActor());
+		movie.setCountry(movieToUpdate.getCountry());
+		movie.setDesc(movieToUpdate.getDesc());
+		movie.setCatdesc(movieToUpdate.getCatdesc());
+		movie.setStatus(new Byte(movieToUpdate.getStatus()));
+		movie.setEpisode(new Integer(movieToUpdate.getEpisode()));
+		movie.setCategory(categoryToUpdate);
+		movie.setMovieId(theMovieId);
+		Gson gson = new Gson();
+		PrintWriter writer = response.getWriter();
+		writer.print(gson.toJson(movie));
+		writer.flush();
+		writer.close();
 	}
 
 	private void insert(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -117,8 +134,7 @@ public class MovieController extends HttpServlet {
 		newMovie.setAuthor(request.getParameter("author"));
 		newMovie.setActor(request.getParameter("actor"));
 		newMovie.setCountry(request.getParameter("country"));
-		newMovie.setAuthor(request.getParameter("author"));
-		newMovie.setDesc(request.getParameter("desc"));
+		newMovie.setDesc(request.getParameter("description"));
 		newMovie.setCatdesc(request.getParameter("catDesc"));
 		newMovie.setStatus(new Byte(request.getParameter("status")));
 //		newMovie.setImg(request.getParameter("img"));
@@ -152,10 +168,9 @@ public class MovieController extends HttpServlet {
 			request.setAttribute("theMovie", newMovie);
 			RequestDispatcher rd = request.getRequestDispatcher("movie.jsp");
 			rd.forward(request, response);
-			return;
 		}
 
-		response.sendRedirect(request.getContextPath() + "/admin/");
+		response.sendRedirect(request.getContextPath() + "/admin/manage_movie");
 	}
 
 	private void update(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
