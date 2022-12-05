@@ -1,6 +1,7 @@
 package com.ray.controller.admin;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -15,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import com.google.gson.Gson;
 import com.ray.entity.Category;
@@ -95,7 +97,8 @@ public class MovieController extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 
-	private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void showEditForm(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
 		response.setContentType("application/json");
 		Integer theMovieId = Integer.valueOf(request.getParameter("movieId"));
 
@@ -103,7 +106,7 @@ public class MovieController extends HttpServlet {
 
 		List<Category> categoryList = categoryService.listCategory();
 		request.getSession().setAttribute("categoryList", categoryList);
-		Integer theCategoryId = Integer.valueOf(request.getParameter("categoryId"));
+		Integer theCategoryId = Integer.valueOf(request.getParameter("catId"));
 
 		Category categoryToUpdate = categoryService.getById(theCategoryId);
 		Movie movie = new Movie();
@@ -115,10 +118,12 @@ public class MovieController extends HttpServlet {
 		movie.setCatdesc(movieToUpdate.getCatdesc());
 		movie.setStatus(new Byte(movieToUpdate.getStatus()));
 		movie.setEpisode(new Integer(movieToUpdate.getEpisode()));
-		movie.setCategory(categoryToUpdate);
-		movie.setMovieId(theMovieId);
-		Gson gson = new Gson();
 		PrintWriter writer = response.getWriter();
+
+		movie.setMovieId(theMovieId);
+		movie.setPublishDate(movieToUpdate.getPublishDate());
+
+		Gson gson = new Gson();
 		writer.print(gson.toJson(movie));
 		writer.flush();
 		writer.close();
@@ -137,8 +142,9 @@ public class MovieController extends HttpServlet {
 		newMovie.setDesc(request.getParameter("description"));
 		newMovie.setCatdesc(request.getParameter("catDesc"));
 		newMovie.setStatus(new Byte(request.getParameter("status")));
-//		newMovie.setImg(request.getParameter("img"));
 		newMovie.setEpisode(new Integer(request.getParameter("episode")));
+		newMovie.setCategory(category);
+
 		try {
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			Date publishDate = dateFormat.parse(request.getParameter("publishDate"));
@@ -147,20 +153,19 @@ public class MovieController extends HttpServlet {
 			e.printStackTrace();
 			throw new ServletException("The format date is yyyy-MM-dd");
 		}
-		newMovie.setCategory(category);
 
-//		Part filePart = request.getPart("image");
-//
-//		if (filePart != null & filePart.getSize() > 0) {
-//			long size = filePart.getSize();
-//			byte[] imageBytes = new byte[(int) size];
-//
-//			InputStream inputStream = filePart.getInputStream();
-//			inputStream.read(imageBytes);
-//			inputStream.close();
-//
-//			newMovie.setImg(imageBytes);
-//		}
+		Part filePart = request.getPart("file");
+
+		if (filePart != null & filePart.getSize() > 0) {
+			long size = filePart.getSize();
+			byte[] imageBytes = new byte[(int) size];
+
+			InputStream inputStream = filePart.getInputStream();
+			inputStream.read(imageBytes);
+			inputStream.close();
+
+			newMovie.setImg(imageBytes);
+		}
 
 		String errorMessage = this.movieService.create(newMovie);
 		if (errorMessage != null) {
@@ -174,20 +179,53 @@ public class MovieController extends HttpServlet {
 	}
 
 	private void update(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-//		Integer movieId = Integer.valueOf(request.getParameter("movieId"));
-//		String name = request.getParameter("name");
-//		
-//		Movie MovieToUpdate = new Movie(movieId, name);
-//		String errorMessage = movieService.update(MovieToUpdate);
-//		
-//		if (errorMessage != null) {
-//			request.setAttribute("message", errorMessage);
-//			RequestDispatcher rd = request.getRequestDispatcher("Movie_form.jsp");
-//			rd.forward(request, response);
-//			return;
-//		}
-//		
-//		response.sendRedirect("manage_movie?command=LIST");
+		Integer movieId = Integer.valueOf(request.getParameter("movieId"));
+		Movie movieToUpdate = movieService.getById(movieId);
+
+		Integer categoryId = Integer.parseInt(request.getParameter("category"));
+		Category category = categoryService.getById(categoryId);
+
+		movieToUpdate.setName(request.getParameter("name"));
+		movieToUpdate.setAuthor(request.getParameter("author"));
+		movieToUpdate.setActor(request.getParameter("actor"));
+		movieToUpdate.setCountry(request.getParameter("country"));
+		movieToUpdate.setDesc(request.getParameter("description"));
+		movieToUpdate.setCatdesc(request.getParameter("catDesc"));
+		movieToUpdate.setStatus(new Byte(request.getParameter("status")));
+		movieToUpdate.setEpisode(new Integer(request.getParameter("episode")));
+		movieToUpdate.setCategory(category);
+
+		try {
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date publishDate = dateFormat.parse(request.getParameter("publishDate"));
+			movieToUpdate.setPublishDate(publishDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			throw new ServletException("The format date is yyyy-MM-dd");
+		}
+
+		Part filePart = request.getPart("file");
+
+		if (filePart != null & filePart.getSize() > 0) {
+			long size = filePart.getSize();
+			byte[] imageBytes = new byte[(int) size];
+
+			InputStream inputStream = filePart.getInputStream();
+			inputStream.read(imageBytes);
+			inputStream.close();
+
+			movieToUpdate.setImg(imageBytes);
+		}
+
+		String errorMessage = this.movieService.update(movieToUpdate);
+		if (errorMessage != null) {
+			request.setAttribute("message", errorMessage);
+			request.setAttribute("theProduct", movieToUpdate);
+			RequestDispatcher rd = request.getRequestDispatcher("movie.jsp");
+			rd.forward(request, response);
+			return;
+		}
+		response.sendRedirect(request.getContextPath() + "/admin/manage_movie?command=LIST");
 	}
 
 	private void delete(HttpServletRequest request, HttpServletResponse response) throws IOException {

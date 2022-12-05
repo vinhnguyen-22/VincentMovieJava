@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +22,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "movie")
 @NamedQueries({ @NamedQuery(name = "Movie.HQL.getByName", query = "SELECT m FROM Movie m where m.name = :name"),
-		@NamedQuery(name = "Movie.HQL.getByNameAndNotMovieId", query = "SELECT m FROM Movie m where m.name = :name and m.movieId != :moieId") })
+		@NamedQuery(name = "Movie.HQL.getByNameAndNotMovieId", query = "SELECT m FROM Movie m where m.name = :name and m.movieId != :movieId") })
 public class Movie {
 
 	@Id
@@ -63,7 +64,7 @@ public class Movie {
 	@UpdateTimestamp
 	private Date lastUpdateTime;
 
-	@ManyToOne()
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "category_id")
 	private Category category;
 
@@ -193,5 +194,4 @@ public class Movie {
 				+ ", lastUpdateTime=" + lastUpdateTime + ", category=" + category + ", base64Image=" + base64Image
 				+ "]";
 	}
-
 }

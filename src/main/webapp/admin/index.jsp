@@ -9,14 +9,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
     <div class="wrapper">
       <%@include file="partials/sidebar.jsp" %>
 
-      <section class="home-section p-4">
-        <div class="layer">
-          <div class="wrapper-loader">
-            <div class="loader"></div>
-            <div class="loader"></div>
-          </div>
-        </div>
-      </section>
+     
     </div>
     <%@include file="partials/footer.jsp" %>
   </body>

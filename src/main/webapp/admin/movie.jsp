@@ -63,7 +63,11 @@
 							
 							<tr>
 								<td>${count.index + 1}</td>
-								<td>${movie.img }</td>
+								<td>	
+									<c:if test="movie.base64Image">
+										<img src="data:image/jpg;base64,${movie.base64Image}" style="width: 130px; height: 180px; object-fit:cover;">
+									</c:if>
+								</td>
 								<td>${movie.name }</td>
 								<td>${movie.episode }</td>
 								<td>${movie.actor }</td>
@@ -112,7 +116,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js"></script>
-	
+
 <script type="text/javascript">
 	var notification = document.getElementById("notification");
 	
@@ -137,20 +141,33 @@
 		});
 		$(".edit").on('click', function() {
 			var id = $(this).data("id");
-			var catId = $(this).data("catId");
+			var catId = $(this).data("catid");
 			$('#updateModal #id').val(id)
-			$('#updateModal #catId').val(catId)
+			$('#updateModal #theSelectedCategory').val(catId)
 			$.ajax({
 				type: "GET",
 				url:'manage_movie?command=LOAD',
 				data:{
 					movieId: id,
-					categoryId: catId
+					catId: catId
 				},
 				dataType: "JSON",
 				contentType: "application/json",
 				success: function(rs) {
+					console.log(rs);
+					var abc = new Date(rs.publishDate);
+				
+					var currentDate = abc.toISOString().substring(0,10);
 					$("#updateModal #name").val(rs.name);
+					$("#updateModal #actor").val(rs.actor);
+					$("#updateModal #author").val(rs.author);
+					$("#updateModal #catDesc").val(rs.catDesc);
+					$("#updateModal #country").val(rs.country);
+					$("#updateModal #episode").val(rs.episode);
+					$("#updateModal #description").val(rs.description);
+					$("#updateModal #status").val(rs.status);
+					$("#updateModal #selectCategory").val(catId);
+					$("#updateModal #publishDate").val(currentDate);
 				}
 			})
 		})
